@@ -1,66 +1,96 @@
-const thisColor = document.getElementById("thisColor");
-const result = document.getElementById("result");
+let button = document.querySelectorAll("#btn");
+let farbe = document.getElementById("thisColor");
+let result = document.getElementById("result");
+let numQuadrat = 5;
+let colors = [];
+let pickedColor;
+let resetButton = document.querySelector("#reset");
+console.log();
 
-let r = Math.floor(Math.random() * 256);
-let g = Math.floor(Math.random() * 256);
-let b = Math.floor(Math.random() * 256);
-let rgb = 'rgb(' + r + ', ' + g + ', ' + b + ')';
-let rgb2 = 'rgb(' + g + ',' + b + ',' + r + ')';
-let rgb3 = 'rgb(' + b + ',' + r + ',' + g + ')';
-let rgb4 = 'rgb(' + r + ',' + b + ',' + g + ')';
-let rgb5 = 'rgb(' + r + ',' + r + ',' + g + ')';
+init();
 
-console.log(rgb)
-console.log(rgb2)
-console.log(rgb3)
-console.log(rgb4)
-console.log(rgb5)
+function init() {
+  setupQuadrate();
 
-thisColor.innerHTML = rgb;
+  reset();
+}
+function setupQuadrate() {
+  for (var i = 0; i < button.length; i++) {
+    // click listeners für die buttons
+    button[i].addEventListener("click", function () {
+      //die Farbe des geklickten button nehmen
+      let clickedColor = this.style.backgroundColor;
 
-let zufall = Math.floor(Math.random() * 3);
-console.log(zufall);
+      //Vergleich  mit gewählter Farbe
+      if (clickedColor === pickedColor) {
+        result.textContent = "Das stimmt!! Super!!";
 
-function randBtn() {
-    if (zufall == 0) {
-        console.log("Case 0");
-        document.getElementById("btn").style.background = rgb2;
-        document.getElementById("btn2").style.background = rgb;
-        document.getElementById("btn3").style.background = rgb4;
-        document.getElementById("btn4").style.background = rgb5;
-        document.getElementById("btn5").style.background = rgb3;
-    } else if (zufall == 1) {
-        console.log("Case 1");
-        document.getElementById("btn").style.background = rgb5;
-        document.getElementById("btn2").style.background = rgb3;
-        document.getElementById("btn3").style.background = rgb2;
-        document.getElementById("btn4").style.background = rgb;
-        document.getElementById("btn5").style.background = rgb4;
-    } else if (zufall == 2) {
-        console.log("Case 2");
-        document.getElementById("btn").style.background = rgb2;
-        document.getElementById("btn2").style.background = rgb5;
-        document.getElementById("btn3").style.background = rgb;
-        document.getElementById("btn4").style.background = rgb3;
-        document.getElementById("btn5").style.background = rgb4;
+        changeColor(clickedColor);
+      } else {
+        result.textContent = "Das stimmt leider nicht!! Versuche es nochmal!!";
+      }
+    });
+  }
+}
+
+function reset() {
+  colors = generateRandomColors(numQuadrat);
+
+  //eine zufällige Farbe aus dem array wählen
+  pickedColor = pickRandomColor();
+
+  //die zu ratende Farbe als RGB anzeigen
+  farbe.textContent = `Rate welche Farbe ${pickedColor} ist:`;
+
+  result.textContent = "";
+
+  // den Buttons die Farben zuweisen
+  for (let i = 0; i < button.length; i++) {
+    if (colors[i]) {
+      button[i].style.backgroundColor = colors[i];
     }
-}
-randBtn();
-
-for (let i of document.getElementsByTagName("button")) {
-    i.addEventListener("click", () => {
-        console.log("you chose: " + i.style.background);
-        console.log("The answer is: " + rgb);
-        let rgbColor = i.style.background;
-        if (rgbColor == 'rgb(' + r + ', ' + g + ', ' + b + ')') {
-            thisColor.style.color = rgb;
-            result.innerHTML = "Das stimmt! Super! Reset me to guess again!"
-        } else {
-            result.innerHTML = "Das stimmt leider nicht. Versuche es nochmal."
-        }
-    })
+  }
 }
 
-function restart() {
-    location.reload();
+resetButton.addEventListener("click", function () {
+  reset();
+});
+
+function changeColor(color) {
+  //Loop über die Buttons
+
+  // Alle Buttons auf die richtige Farbe ändern
+  for (let i = 0; i < button.length; i++) {
+    button[i].style.backgroundColor = color;
+  }
+}
+
+function pickRandomColor() {
+  let random = Math.floor(Math.random() * colors.length);
+  return colors[random];
+}
+function generateRandomColors(num) {
+  // ein array generieren
+  let arr = [];
+
+  // zufällige Farben den array zuweisen
+  for (let i = 0; i < num; i++) {
+    arr.push(randomColor());
+  }
+
+  //den array ausgeben
+  return arr;
+}
+
+function randomColor() {
+  // rot zwischen 0 - 255
+  r = Math.floor(Math.random() * 256);
+
+  // grün zwischen 0 - 255
+  let g = Math.floor(Math.random() * 256);
+
+  // blau zwischen 0 - 255
+  let b = Math.floor(Math.random() * 256);
+
+  return "rgb(" + r + ", " + g + ", " + b + ")";
 }

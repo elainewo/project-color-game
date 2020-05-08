@@ -3,6 +3,10 @@
     padding: 0;
 }
 
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 section {
     height: 100vh;
     display: flex;
@@ -19,9 +23,14 @@ div {
 }
 
 button {
-    width: 150px;
-    height: 150px;
-    border: 1px solid #000;
+    width: 15rem;
+    height: 15rem;
+    border-style: none;
+    box-shadow: 5px 5px 10px rgb(160, 160, 160);
+}
+
+button:hover {
+    transform: scale(1.1);
 }
 
 h1 {
@@ -35,7 +44,11 @@ input[type=button] {
     padding: 5px 9px;
 }
 
-span {
-    font-style: italic;
-    font-weight: lighter;
+input[type=button]:hover {
+    background: #000;
+    color: #fff;
+}
+
+p {
+    font-size: 2rem;
 }
